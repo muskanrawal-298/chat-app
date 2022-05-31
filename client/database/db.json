@@ -1,0 +1,29 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "Muskan",
+      "password": "abc"
+    },
+    {
+      "id": 2,
+      "name": "Anjali",
+      "password": "def"
+    },
+    {
+      "id": 3,
+      "name": "Shaurya",
+      "password": "ghi"
+    },
+    {
+      "id": 4,
+      "name": "priya",
+      "password": "1234"
+    },
+    {
+        "id": 5,
+        "name": "priyanshi",
+        "password": "1234"
+      }
+  ]
+}
