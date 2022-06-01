@@ -6,7 +6,7 @@ import Messages from './Messages'
 import io from 'socket.io-client'
 // import useChat from './useChat'
 
-const socket = io('http://localhost:4000')
+const socket = io('http://localhost:4001')
 
 
 function Chats() {
@@ -19,32 +19,81 @@ function Chats() {
 
     useEffect(() => {
         socket.on('message', payload => {
+            //console.log(">>>>", payload)
           setChat([...chat, payload])
         })
       })
+
     
-      const sendMessage = (e) => {
+    
+      const sendMessage = async(e) => {
         e.preventDefault();
-        console.log("req:",message)
-        socket.emit('message',{message})
+        const currentUser = localStorage.getItem("name");
+        let response =  await api.get("/users")
+        response = response.data;
+       
+        const user = response.filter(item => item.name == nextUser)
+        console.log("////", user)
+        const index = user[0].id;
+        if(user[0]["messages"]){
+            if(user[0]["messages"][currentUser]){
+                let temp = {"message": message, timeStamp: Date.now()}
+                user[0]["messages"][currentUser].push(temp)
+            }
+            else{
+                let temp = {"message": message, timeStamp: Date.now()}
+                user[0]["messages"][currentUser] = []
+            user[0]["messages"][currentUser].push(temp)
+            }
+            
+        }
+        else{
+            user[0]["messages"] = {};
+            let temp = {"message": message, timeStamp: Date.now()}
+            user[0]["messages"][currentUser] = []
+            user[0]["messages"][currentUser].push(temp)
+        }
+        console.log(">>>>>", currentUser, nextUser, user)
+        const res = await api.put(`/users/${index}`,user[0])
+        socket.emit('message',{message, currentUser})
         setMessage('')
       };
 
     useEffect(() => {
-        const currectUser = localStorage.getItem("name");
-        if(!currectUser){
+        const currentUser = localStorage.getItem("name");
+        if(!currentUser){
             router.push("/")
         }
         else{
             handleChange();
         }
     }, [])
+
+    const filterOldChats = async() => {
+        const currentUser = localStorage.getItem("name");
+        let response =  await api.get("/users")
+        response = response.data;
+        const userNext = response.filter(item => item.name == nextUser)
+        const userCurrent = response.filter(item => item.name == currentUser)
+        
+        let currentMessages = [userNext["messages"] && userNext["messages"][currentUser], userCurrent["messages"] && userCurrent["messages"][nextUser]]
+        console.log(".....<<<<<....>>>>", userNext, userCurrent, currentMessages)
+       // setChat([...currentMessages])
+    }
+
+    useEffect(() => {
+        if(nextUser!=""){
+            filterOldChats();
+        }
+
+    }, [nextUser])
+
     const handleChange = async() => {
         let response =  await api.get("/users")
         response = response.data;
-        const currectUser = localStorage.getItem("name");
+        const currentUser = localStorage.getItem("name");
         let tempData = response.filter(user => {
-                return user.name.toLowerCase() != currectUser.toLowerCase()
+                return user.name.toLowerCase() != currentUser.toLowerCase()
               }
         )
         setUser([...tempData])
@@ -57,6 +106,7 @@ function Chats() {
 
     const handleChats = (name) => {
         setNextUser(name)
+        
     }
   return (
     <div>
@@ -69,7 +119,7 @@ function Chats() {
       <button onClick={handleLogout} style={{ position: "absolute", right: 0}}>Logout</button>
       <br/><br/><br/>
      
-      {nextUser && <Messages nextUser={nextUser} sendMessage={sendMessage}/>}
+      {nextUser && <Messages nextUser={nextUser} sendMessage={sendMessage} chat={chat} setMessage={setMessage} message={message}/>}
     </div>
   )
 }

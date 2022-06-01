@@ -3,7 +3,23 @@
     {
       "id": 1,
       "name": "Muskan",
-      "password": "abc"
+      "password": "abc",
+      "messages": {
+        "Shaurya": [
+          {
+            "message": "Hi Shaurya",
+            "timeStamp": 1654064978246
+          },
+          {
+            "message": "Long time",
+            "timeStamp": 1654064981536
+          },
+          {
+            "message": ".....",
+            "timeStamp": 1654065095030
+          }
+        ]
+      }
     },
     {
       "id": 2,
@@ -13,7 +29,15 @@
     {
       "id": 3,
       "name": "Shaurya",
-      "password": "ghi"
+      "password": "ghi",
+      "messages": {
+        "Muskan": [
+          {
+            "message": "Hi Shaurya",
+            "timeStamp": 1654064966752
+          }
+        ]
+      }
     },
     {
       "id": 4,
@@ -21,9 +45,9 @@
       "password": "1234"
     },
     {
-        "id": 5,
-        "name": "priyanshi",
-        "password": "1234"
-      }
+      "id": 5,
+      "name": "priyanshi",
+      "password": "1234"
+    }
   ]
 }
