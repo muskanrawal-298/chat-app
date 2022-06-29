@@ -1,0 +1,3 @@
+export const VideoStyle = (theme) => ({
+	container: { display: "grid", gridTemplateColumns: "7fr 3fr" }, myId: { marginRight: "5rem", borderRadius: "5px", background: "linear-gradient(\n\t\tto right,\n\t\t#e2e2e2,\n\t\t#c9d6ff\n\t)", padding: "2rem", display: "grid", justifyContent: "center", alignContent: "center" }, callButton: { textAlign: "center", marginTop: "2rem" }, videoContainer: { display: "grid", gridTemplateColumns: "1fr 1fr", justifyContent: "center", alignContent: "center", marginTop: "10rem", marginLeft: "10rem" }, caller: { textAlign: "center", color: "#fff" }, body: { background: "linear-gradient(\n\t\tto right,\n\t\t#8e54e9,\n\t\t#4776e6\n\t)" }
+})
